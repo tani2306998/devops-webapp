@@ -1,27 +1,29 @@
-name: CI Pipeline - DevOps Web App
+name: CI Pipeline
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Simulate build step
-        run: |
-          echo "Building the web application..."
-          ls
-          echo "Build completed successfully"
+    - name: Run build step
+      run: |
+        echo "Building the project..."
+        ls
 
-      - name: Run basic test
-        run: |
-          echo "Running tests..."
-          test -f index.html
-          echo "Test passed: index.html exists"
+    - name: Send Slack notification
+      if: always()
+      run: |
+        curl -X POST -H 'Content-type: application/json' \
+        --data '{
+          "text": "GitHub Actions CI Pipeline completed for devops-webapp\nStatus: ${{ job.status }}"
+        }' \
+        ${{ secrets.SLACK_WEBHOOK_URL }}
+
 
