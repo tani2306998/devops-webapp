@@ -1,0 +1,27 @@
+name: CI Pipeline - DevOps Web App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Simulate build step
+        run: |
+          echo "Building the web application..."
+          ls
+          echo "Build completed successfully"
+
+      - name: Run basic test
+        run: |
+          echo "Running tests..."
+          test -f index.html
+          echo "Test passed: index.html exists"
+
